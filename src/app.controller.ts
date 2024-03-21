@@ -1,8 +1,10 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Logger, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
+  private readonly logger = new Logger(AppController.name);
+
   constructor(private readonly appService: AppService) {}
 
   @Get()
@@ -12,6 +14,7 @@ export class AppController {
 
   @Post('transcode')
   async transcode() {
+    this.logger.log('trascode was called');
     this.appService.transcode();
   }
 }

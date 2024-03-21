@@ -2,8 +2,10 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BullModule } from '@nestjs/bull';
+import { ScheduleModule } from '@nestjs/schedule';
 import { TRANSCODE_QUEUE } from './constants';
 import { TranscodeConsumer } from './transcode.consumer';
+import { AnotherService } from './another.service';
 
 @Module({
   imports: [
@@ -11,13 +13,14 @@ import { TranscodeConsumer } from './transcode.consumer';
       redis: {
         host: 'localhost',
         port: 6379,
-      }
+      },
     }),
     BullModule.registerQueue({
-      name: TRANSCODE_QUEUE
+      name: TRANSCODE_QUEUE,
     }),
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
-  providers: [AppService, TranscodeConsumer],
+  providers: [AppService, TranscodeConsumer, AnotherService],
 })
 export class AppModule {}
